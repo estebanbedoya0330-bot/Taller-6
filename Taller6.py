@@ -1,4 +1,4 @@
-
+#1
 def buscar_comentarios(comentarios):
     if len(comentarios) == 0:
         print("No hay comentarios registrados.")
@@ -59,3 +59,24 @@ def buscar_comentarios(comentarios):
     print("Palabras:", resumen[1])
     print("Apariciones de '" + palabra + "':", resumen[2])
     return resumen
+
+#2
+def contar_palabra(comentarios):
+    if len(comentarios) == 0:
+        print("No hay comentarios registrados.")
+        return
+
+    texto = elegir_comentario(comentarios)
+    if texto is None:
+        return
+
+    palabra = input("Palabra a contar: ").strip().lower()
+    if palabra == "":
+        print("Debe escribir una palabra.")
+        return
+
+    veces = limpiar_palabras(texto).count(palabra)
+    if veces == 0:
+        print("La palabra '" + palabra + "' no aparece en el comentario.")
+    else:
+        print("La palabra '" + palabra + "' aparece", veces, "vez/veces.")
