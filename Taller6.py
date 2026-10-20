@@ -1,4 +1,4 @@
-
+#1
 frase = input("Escriba una frase: ").strip()
 
 print("Frase:", frase)
@@ -30,7 +30,7 @@ print("Caracteres:", resumen[0])
 print("Palabras:", resumen[1])
 print("Apariciones de la letra:", resumen[2])
 
-# Taller 6: Analizador de comentarios
+#2
 
 comentarios = []
 
@@ -121,7 +121,8 @@ def contar_apariciones():
     cantidad = texto.count(palabra)
 
     print("La palabra aparece", cantidad, "veces.")
-
+    
+#3
 
 def mostrar_resumen():
     posicion = seleccionar_comentario()
