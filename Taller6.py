@@ -1,140 +1,187 @@
-import re
+
+frase = input("Escriba una frase: ").strip()
+
+print("Frase:", frase)
+print("Minusculas:", frase.lower())
+print("Mayusculas:", frase.upper())
+
+cantidad_caracteres = len(frase)
+palabras = frase.split()
+cantidad_palabras = len(palabras)
+
+print("Caracteres:", cantidad_caracteres)
+print("Palabras:", cantidad_palabras)
+
+letra = input("Que letra desea contar?: ").strip().lower()
+cantidad_letra = frase.lower().count(letra)
+
+print("\n--- PALABRAS ---")
+for i in range(len(palabras)):
+    print(i + 1, palabras[i])
+
+resumen = (
+    cantidad_caracteres,
+    cantidad_palabras,
+    cantidad_letra
+)
+
+print("\n--- RESUMEN ---")
+print("Caracteres:", resumen[0])
+print("Palabras:", resumen[1])
+print("Apariciones de la letra:", resumen[2])
+
+# Taller 6: Analizador de comentarios
+
+comentarios = []
 
 
-def buscar_comentarios(comentarios):
-    """Busca una palabra dentro de todos los comentarios."""
-    if not comentarios:
-        print("No hay comentarios registrados.")
-        return
+def registrar_comentario():
+    texto = input("Escriba el comentario: ").strip()
 
-    palabra = input("Palabra a buscar: ").strip().lower()
-    if palabra == "":
-        print("Debe escribir una palabra.")
-        return
-
-    encontrados = 0
-    for i, comentario in enumerate(comentarios, start=1):
-        if palabra in comentario.lower():
-            print(f"Comentario {i}: {comentario}")
-            encontrados += 1
-
-    if encontrados == 0:
-        print(f"Búsqueda sin coincidencias para '{palabra}'.")
+    if texto != "":
+        comentarios.append(texto)
+        print("Comentario registrado correctamente.")
     else:
-        print(f"Búsqueda exitosa: {encontrados} comentario(s) encontrado(s).")
+        print("El comentario no puede estar vacio.")
 
 
-def limpiar_palabras(texto):
-    """Devuelve una lista de palabras limpias en minúsculas."""
-    return re.findall(r"[A-Za-zÁÉÍÓÚáéíóúÜüÑñ]+", texto.lower())
-
-
-def elegir_comentario(comentarios):
-    """Muestra los comentarios y devuelve el texto seleccionado."""
-    if not comentarios:
+def mostrar_comentarios():
+    if len(comentarios) == 0:
         print("No hay comentarios registrados.")
-        return None
+    else:
+        print("\n--- COMENTARIOS REGISTRADOS ---")
 
-    for i, comentario in enumerate(comentarios, start=1):
-        print(f"{i}. {comentario}")
+        for i in range(len(comentarios)):
+            print(i + 1, ".", comentarios[i])
 
-    opcion = input("Selecciona el número del comentario: ").strip()
-    if opcion == "":
-        print("Debe ingresar un número.")
-        return None
+
+def buscar_comentarios():
+    if len(comentarios) == 0:
+        print("No hay comentarios registrados.")
+        return
+
+    palabra = input("Escriba la palabra que desea buscar: ")
+    palabra = palabra.strip().lower()
+    encontrado = False
+
+    for i in range(len(comentarios)):
+        texto = comentarios[i].lower()
+
+        if palabra in texto:
+            print(i + 1, ".", comentarios[i])
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron comentarios con esa palabra.")
+
+
+def contar_palabras():
+    if len(comentarios) == 0:
+        print("No hay comentarios registrados.")
+        return
+
+    print("\n--- CANTIDAD DE PALABRAS ---")
+
+    for i in range(len(comentarios)):
+        palabras = comentarios[i].split()
+        print("Comentario", i + 1, ":", len(palabras), "palabras")
+
+
+def seleccionar_comentario():
+    if len(comentarios) == 0:
+        print("No hay comentarios registrados.")
+        return -1
+
+    mostrar_comentarios()
 
     try:
-        indice = int(opcion) - 1
+        numero = int(input("Seleccione el numero del comentario: "))
+
+        if numero >= 1 and numero <= len(comentarios):
+            return numero - 1
+        else:
+            print("Numero de comentario no valido.")
+            return -1
+
     except ValueError:
-        print("Debe ingresar un número válido.")
-        return None
-
-    if 0 <= indice < len(comentarios):
-        return comentarios[indice]
-
-    print("Número fuera de rango.")
-    return None
+        print("Debe ingresar un numero entero.")
+        return -1
 
 
-def contar_palabra(comentarios):
-    """Cuenta cuántas veces aparece una palabra en un comentario elegido."""
-    if not comentarios:
-        print("No hay comentarios registrados.")
+def contar_apariciones():
+    posicion = seleccionar_comentario()
+
+    if posicion == -1:
         return
 
-    texto = elegir_comentario(comentarios)
-    if texto is None:
+    palabra = input("Escriba la palabra que desea contar: ")
+    palabra = palabra.strip().lower()
+
+    texto = comentarios[posicion].lower()
+    cantidad = texto.count(palabra)
+
+    print("La palabra aparece", cantidad, "veces.")
+
+
+def mostrar_resumen():
+    posicion = seleccionar_comentario()
+
+    if posicion == -1:
         return
 
-    palabra = input("Palabra a contar: ").strip().lower()
-    if palabra == "":
-        print("Debe escribir una palabra.")
-        return
+    texto = comentarios[posicion]
+    palabras = texto.split()
 
-    palabras = limpiar_palabras(texto)
-    veces = palabras.count(palabra)
+    palabra = input("Escriba la palabra que desea contar: ")
+    palabra = palabra.strip().lower()
 
-    if veces == 0:
-        print(f"La palabra '{palabra}' no aparece en el comentario.")
-    else:
-        print(f"La palabra '{palabra}' aparece {veces} vez/veces.")
+    cantidad_caracteres = len(texto)
+    cantidad_palabras = len(palabras)
+    cantidad_apariciones = texto.lower().count(palabra)
 
+    resumen = (
+        cantidad_caracteres,
+        cantidad_palabras,
+        cantidad_apariciones
+    )
 
-def resumen_comentario(comentarios):
-    """Devuelve un resumen de caracteres, palabras y apariciones."""
-    if not comentarios:
-        print("No hay comentarios registrados.")
-        return None
-
-    texto = elegir_comentario(comentarios)
-    if texto is None:
-        return None
-
-    palabra = input("Palabra a buscar en el comentario: ").strip().lower()
-
-    caracteres = len(texto)
-    palabras = limpiar_palabras(texto)
-    apariciones = palabras.count(palabra) if palabra != "" else 0
-    resumen = (caracteres, len(palabras), apariciones)
-
-    print("\n--- RESUMEN ---")
-    print(f"Caracteres: {resumen[0]}")
-    print(f"Palabras: {resumen[1]}")
-    print(f"Apariciones de '{palabra}': {resumen[2]}")
-    return resumen
+    print("\n--- RESUMEN DEL COMENTARIO ---")
+    print("Caracteres:", resumen[0])
+    print("Palabras:", resumen[1])
+    print("Apariciones de la palabra:", resumen[2])
+    print("Tupla del resumen:", resumen)
 
 
 def menu():
-    """Menú de prueba para ejecutar las funciones del taller."""
-    comentarios = [
-        "Me gusta mucho este curso de Python.",
-        "El proyecto es interesante y muy útil.",
-        "Python es un lenguaje poderoso y sencillo.",
-        "Me encanta programar en Python todos los días.",
-        "El curso fue interesante, pero necesito practicar más."
-    ]
-
     while True:
-        print("\n=== MENÚ ===")
-        print("1. Buscar comentarios")
-        print("2. Contar palabra en un comentario")
-        print("3. Resumen de un comentario")
-        print("4. Salir")
+        print("\n===== ANALIZADOR DE COMENTARIOS =====")
+        print("1. Registrar un comentario")
+        print("2. Mostrar todos los comentarios")
+        print("3. Buscar comentarios por palabra")
+        print("4. Mostrar cantidad de palabras")
+        print("5. Contar apariciones de una palabra")
+        print("6. Mostrar resumen de un comentario")
+        print("7. Salir")
 
-        opcion = input("Seleccione una opción: ").strip()
+        opcion = input("Seleccione una opcion: ").strip()
 
         if opcion == "1":
-            buscar_comentarios(comentarios)
+            registrar_comentario()
         elif opcion == "2":
-            contar_palabra(comentarios)
+            mostrar_comentarios()
         elif opcion == "3":
-            resumen_comentario(comentarios)
+            buscar_comentarios()
         elif opcion == "4":
-            print("Hasta luego.")
+            contar_palabras()
+        elif opcion == "5":
+            contar_apariciones()
+        elif opcion == "6":
+            mostrar_resumen()
+        elif opcion == "7":
+            print("Gracias por utilizar el programa.")
             break
         else:
-            print("Opción no válida.")
+            print("Opcion no valida. Intente nuevamente.")
 
 
-if __name__ == "__main__":
-    menu()
+menu()
