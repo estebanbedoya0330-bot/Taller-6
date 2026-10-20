@@ -18,9 +18,9 @@ def buscar_comentarios(comentarios):
             encontrados += 1
 
     if encontrados == 0:
-        print("Búsqueda sin coincidencias para '" + palabra + "'.")
+        print(f"Búsqueda sin coincidencias para '{palabra}'.")
     else:
-        print("Búsqueda exitosa:", encontrados, "comentario(s) encontrado(s).")
+        print(f"Búsqueda exitosa: {encontrados} comentario(s) encontrado(s).")
 
 
 def limpiar_palabras(texto):
@@ -70,9 +70,9 @@ def contar_palabra(comentarios):
 
     veces = limpiar_palabras(texto).count(palabra)
     if veces == 0:
-        print("La palabra '" + palabra + "' no aparece en el comentario.")
+        print(f"La palabra '{palabra}' no aparece en el comentario.")
     else:
-        print("La palabra '" + palabra + "' aparece", veces, "vez/veces.")
+        print(f"La palabra '{palabra}' aparece {veces} vez/veces.")
 
 
 # 3
@@ -96,5 +96,5 @@ def resumen_comentario(comentarios):
     print("\n--- RESUMEN ---")
     print("Caracteres:", resumen[0])
     print("Palabras:", resumen[1])
-    print("Apariciones de '" + palabra + "':", resumen[2])
+    print(f"Apariciones de '{palabra}':", resumen[2])
     return resumen
